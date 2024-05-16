@@ -35,7 +35,7 @@ export default function AdminProduct(): JSX.Element {
     }
 
     function refresh() {
-        fetch(`http://localhost:8080/api/category/product/${categoryId}`, {
+        fetch(`https://node-js-jwt-auth.onrender.com/api/category/product/${categoryId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ export default function AdminCategory(): JSX.Element {
 
     function refresh() {
         if (token) {
-            fetch('http://localhost:8080/api/category', {
+            fetch('https://node-js-jwt-auth.onrender.com/api/category', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
