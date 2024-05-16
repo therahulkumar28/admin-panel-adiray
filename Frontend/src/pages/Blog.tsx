@@ -30,7 +30,7 @@ const Blog: React.FC = () => {
     }
 
     try {
-      axios.delete(`http://localhost:8080/api/posts/${post_id}`).then((response: AxiosResponse) => {
+      axios.delete(`https://node-js-jwt-auth.onrender.com/api/posts/${post_id}`).then((response: AxiosResponse) => {
         if (response.status === 200) {
           setBlogPosts(blogPosts.filter(post => post._id !== post_id));
           
@@ -45,7 +45,7 @@ const Blog: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get<BlogPost[]>('http://localhost:8080/api/posts/')
+      .get<BlogPost[]>('https://node-js-jwt-auth.onrender.com/api/posts/')
       .then((response: AxiosResponse<BlogPost[]>) => {
         setBlogPosts(response.data);
 
@@ -78,7 +78,6 @@ const Blog: React.FC = () => {
 
   return (
     <div className="relative w-full flex justify-center shadow-md">
-      <img className="absolute opacity-20 -z-1 object-cover w-full h-full -z-0" src='.' alt="background" />
       <div className="p-8 px-[10vw] z-[5] max-w-[1300px] flex flex-col justify-center  ">
         <div className="mb-6 md:flex justify-between items-center">
           <h1 data-aos={shouldAnimate ? 'slide-right' : ''} className="text-[clamp(35px,3.5vw,5rem)] font-Mont font-bold">

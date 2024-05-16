@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
-
+import { FaArrowLeft } from 'react-icons/fa6';
+import { Link, useNavigate } from 'react-router-dom';
 const CreateBlog = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     author: '',
     authorImg: '',
@@ -43,10 +45,11 @@ const CreateBlog = () => {
     e.preventDefault();
     try {
       // Send formData to the API
-      await axios.post('http://localhost:8080/api/posts/', formData);
+      await axios.post('https://node-js-jwt-auth.onrender.com/api/posts/', formData);
       // Optionally, you can handle success, reset the form, or redirect the user
       console.log('Blog post created successfully!');
       alert('Post Created Successfully');
+
       // Reset the form after successful submission
       setFormData({
         author: '',
@@ -57,6 +60,7 @@ const CreateBlog = () => {
         details: [{ point: '', description: '' }],
         imageUrl: ''
       });
+      navigate('/admin/blog')
     } catch (error) {
       // Handle errors, such as displaying an error message to the user
       console.error('Error creating blog post:', error);
@@ -64,6 +68,14 @@ const CreateBlog = () => {
   };
 
   return (
+    <div>
+
+   
+       <div className="text-pink-600 text-[13px] m-4 font-semibold flex gap-1 items-center ">
+        <FaArrowLeft />
+        {/* Use Link component for consistent routing */}
+        <Link to="/admin/blog/" className="decoration-none text-pink-600 hover:text-pink-600">All Blogs</Link>
+      </div>
     <div className="max-w-xl mx-auto mt-[4rem] shadow-xl p-[2rem] ">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col">
@@ -84,14 +96,14 @@ const CreateBlog = () => {
         </div>
         <div className="flex flex-col">
           <label className="text-gray-800 font-bold">Description</label>
-          <textarea name="description" value={formData.description} onChange={(e) => setFormData(prevData => ({ ...prevData, description: e.target.value }))} className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-black" required />
+          <textarea name="description" value={formData.description} onChange={(e) => setFormData(prevData => ({ ...prevData, description: e.target.value }))} className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-black h-48" required />
         </div>
         {formData.details.map((detail, index) => (
           <div key={index} className="flex flex-col">
             <label className="text-gray-800 font-bold ">Detail Point</label>
             <input type="text" name="point" value={detail.point} onChange={(e) => handleChange(e, index)} className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-black" required />
             <label className="text-gray-800 font-bold">Detail Description</label>
-            <textarea name="description" value={detail.description} onChange={(e) => handleChange(e, index)} className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-black" required />
+            <textarea name="description" value={detail.description} onChange={(e) => handleChange(e, index)} className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-black h-48" required />
             <button type="button" onClick={() => removeDetail(index)} className="text-gray-700 mt-4 bg-red-500 px-4 py-2 rounded-md hover:bg-red-700">Remove Detail</button>
           </div>
         ))}
@@ -102,6 +114,7 @@ const CreateBlog = () => {
         </div>
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700">Submit</button>
       </form>
+    </div>
     </div>
   );
 };

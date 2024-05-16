@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { FaArrowLeft } from 'react-icons/fa6';
 
 interface Detail {
   point: string;
@@ -35,7 +36,7 @@ const UpdateBlog = () => {
     if (!token) {
         window.location.href = '/';
     }
-    axios.get(`http://localhost:8080/api/posts/${postId}`)
+    axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`)
       .then(response => {
         setFormData(response.data);
         console.log(response.data)
@@ -65,7 +66,7 @@ const UpdateBlog = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8080/api/posts/${postId}`, formData);
+      await axios.put(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, formData);
       console.log('Blog post updated successfully!');
       alert('Post Updated Successfully');
       navigate('/admin/blog')
@@ -91,6 +92,14 @@ const UpdateBlog = () => {
   };
 
   return (
+    <div >
+
+    
+      <div className="text-pink-600 text-[13px] m-4 font-semibold flex gap-1 items-center ">
+            <FaArrowLeft />
+            {/* Use Link component for consistent routing */}
+            <Link to="/admin/blog/" className="decoration-none text-pink-600 hover:text-pink-600">All Blogs</Link>
+          </div>
     <div className="mx-auto md:max-w-xl mx-auto shadow-lg  m-8 mt-8 p-8">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col">
@@ -129,6 +138,7 @@ const UpdateBlog = () => {
         </div>
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 w-full">Update</button>
       </form>
+    </div>
     </div>
   );
 };

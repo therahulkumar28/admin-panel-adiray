@@ -11,7 +11,7 @@ export default function Blogpost() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/posts/${postId}`)
+    axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`)
       .then(response => {
         setPost(response.data);
         setLoading(false);
