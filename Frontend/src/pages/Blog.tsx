@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
-import AOS from 'aos';
-
+import AOS from 'aos'
 type BlogPost = {
   _id: string;
   title: string;
@@ -78,6 +77,7 @@ const Blog: React.FC = () => {
 
   return (
     <div className="relative w-full flex justify-center shadow-md">
+
       <div className="p-8 px-[10vw] z-[5] max-w-[1300px] flex flex-col justify-center  ">
         <div className="mb-6 md:flex justify-between items-center">
           <h1 data-aos={shouldAnimate ? 'slide-right' : ''} className="text-[clamp(35px,3.5vw,5rem)] font-Mont font-bold">

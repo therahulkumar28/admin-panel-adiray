@@ -13,14 +13,13 @@ function App() {
  
 
   return (
-    <>
+    < div className="flex flex-col">
 
     <BrowserRouter>
     <Navbar/>
     <Routes>
       <Route path="/admin/category/:categoryId" element={<AdminProduct/>} />
       <Route path="/admin/category/" element={<AdminCategory/>} />
-      
       <Route path="/" element={<AdminLogin/>} />
       <Route path="/admin/blog/" element={<Blog/>} />
       <Route path="/admin/posts/" element={<CreateBlog/>} />
@@ -28,7 +27,7 @@ function App() {
       <Route path="/admin/blogposts/:postId" element={<Blogpost />} />
     </Routes>
     </BrowserRouter>
-    </>
+    </div>
   )
 }
 
