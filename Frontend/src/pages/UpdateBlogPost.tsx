@@ -33,17 +33,27 @@ const UpdateBlog = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
+    
+  
+    // If token doesn't exist, redirect the user to the login page
     if (!token) {
-        window.location.href = '/';
+      navigate('/');
+      return;
     }
-    axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`)
-      .then(response => {
-        setFormData(response.data);
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.error('Error fetching post details:', error);
-      });
+  
+    // Fetch post details with the token included in the headers
+    axios.get(`http://localhost:8080/api/posts/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      setFormData(response.data);
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching post details:', error);
+    });
   }, [postId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index?: number) => {
@@ -65,13 +75,29 @@ const UpdateBlog = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+  
     try {
-      await axios.put(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, formData);
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        // Handle the case where the user is not authenticated (token not found)
+        console.error('User not authenticated');
+        // Optionally, you can redirect the user to the login page or display an error message
+        return;
+      }
+  
+      // Send formData to the API with the token included in the headers
+      await axios.put(`http://localhost:8080/api/posts/${postId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      // Handle success and redirect the user
       console.log('Blog post updated successfully!');
       alert('Post Updated Successfully');
-      navigate('/admin/blog')
-      
+      navigate('/admin/blog');
     } catch (error) {
+      // Handle errors, such as displaying an error message to the user
       console.error('Error updating blog post:', error);
     }
   };

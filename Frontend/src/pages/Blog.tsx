@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
 import AOS from 'aos'
+import { useNavigate } from 'react-router-dom';
+
 type BlogPost = {
   _id: string;
   title: string;
@@ -21,40 +23,63 @@ const Blog: React.FC = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  
 
-  const DeletePost = (post_id: string) => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-        window.location.href = '/';
+const DeletePost = async (post_id: string) => {
+  
+  const token = localStorage.getItem('adminToken');
+  if (!token) {
+    navigate('/'); // Redirect to login if not authenticated
+    return;
+  }
+
+  try {
+    const response = await axios.delete(`http://localhost:8080/api/posts/${post_id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(token)
+    if (response.status === 200) {
+      setBlogPosts(blogPosts.filter(post => post._id !== post_id));
+    } else {
+      console.error('Unexpected status code:', response.status);
+      // Provide feedback to the user
     }
+  } catch (error) {
+    console.error('Error during deleting the post:', error);
+    // Provide feedback to the user
+  }
+};
 
-    try {
-      axios.delete(`https://node-js-jwt-auth.onrender.com/api/posts/${post_id}`).then((response: AxiosResponse) => {
-        if (response.status === 200) {
-          setBlogPosts(blogPosts.filter(post => post._id !== post_id));
-          
-        } else {
-          console.error('Unexpected status code:', response.status);
-        }
-      });
-    } catch (error) {
-      throw new Error('Error during deleting the post');
-    }
-  };
 
-  useEffect(() => {
+  
+useEffect(() => {
+  const token = localStorage.getItem('adminToken');
+
+  // If token exists, make the API call with the token included in the headers
+  if (token) {
     axios
-      .get<BlogPost[]>('https://node-js-jwt-auth.onrender.com/api/posts/')
+      .get<BlogPost[]>('http://localhost:8080/api/posts/', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then((response: AxiosResponse<BlogPost[]>) => {
         setBlogPosts(response.data);
-
         setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching blog posts:', error);
         setLoading(false);
       });
-  }, []);
+  } else {
+    // Handle the case where the token doesn't exist (user is not authenticated)
+    setLoading(false); // Set loading to false since there's no token to make the request
+    // You might want to redirect the user to the login page or show a message indicating they need to log in
+  }
+}, []);
 
   if (loading) {
     return <div>Loading...</div>;

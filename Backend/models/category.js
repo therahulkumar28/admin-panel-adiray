@@ -6,12 +6,7 @@ const productSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    url: {
-        type: String,
-        required: true
-    }
-})
-
+});
 
 const categorySchema = new mongoose.Schema({
     name: {
@@ -20,14 +15,14 @@ const categorySchema = new mongoose.Schema({
         unique: true
     },
     imageUrl: {
-        type: String,
+        type: [String],
         required: true
     },
     products: {
         type: [productSchema],
-        required: false,
+        default: []  // Initialize products as an empty array by default
     }
 });
 
-const category = mongoose.model('category', categorySchema);
-module.exports = category;
+const Category = mongoose.model('Category', categorySchema);
+module.exports = Category;

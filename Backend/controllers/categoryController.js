@@ -13,7 +13,6 @@ const createCategory = async (req, res) => {
             products: []
             // subCategory: []
         });
-
         const savedCategory = await newCategory.save();
         res.status(201).json({ ...savedCategory, success: true });
     } catch (err) {
@@ -124,9 +123,13 @@ const updateCategory = async (req, res) => {
         if (!category) {
             return res.status(404).json({ message: "Category not found.", success: false });
         }
-        category.name = name;
-        category.imageUrl = imageUrl;
-        category.products = products;
+        if (name)
+            category.name = name;
+        if (imageUrl)
+            category.imageUrl = imageUrl;
+        if (products)
+            category.products = products;
+
         const savedCategory = await category.save();
         res.status(200).json({ ...savedCategory, success: true });
     } catch (err) {
@@ -153,8 +156,6 @@ const updateProduct = async (req, res) => {
         res.status(500).json({ message: err.message, success: false });
     }
 }
-
-
 
 const deleteCategory = async (req, res) => {
     try {
@@ -188,15 +189,5 @@ const deleteProduct = async (req, res) => {
     }
 }
 
-module.exports = { 
-    updateProduct, 
-    createCategory, 
-    createSubCategory, 
-    addProduct, 
-    getCategoryList, 
-    getSubCategoryList, 
-    getCategoryData, 
-    updateCategory,
-    deleteCategory,
-    deleteProduct
-};
+
+module.exports = { deleteCategory, deleteProduct, updateProduct, createCategory, createSubCategory, addProduct, getCategoryList, getSubCategoryList, getCategoryData, updateCategory };

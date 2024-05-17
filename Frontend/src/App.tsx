@@ -5,21 +5,22 @@ import Blog from "./pages/Blog"
 import Blogpost from "./pages/BlogPost"
 import Navbar from "./components/Navbar"
 import AdminLogin from "./pages/Admin/AdminLogin"
-import AdminCategory from "./pages/Admin/AdminCategory"
 import AdminProduct from "./pages/Admin/AdminProduct"
+import Category from "./pages/Category"
 
 
 function App() {
  
 
   return (
-    < div className="flex flex-col">
+    <>
 
     <BrowserRouter>
     <Navbar/>
     <Routes>
       <Route path="/admin/category/:categoryId" element={<AdminProduct/>} />
-      <Route path="/admin/category/" element={<AdminCategory/>} />
+      <Route path="/admin/category/" element={<Category/>} />
+      
       <Route path="/" element={<AdminLogin/>} />
       <Route path="/admin/blog/" element={<Blog/>} />
       <Route path="/admin/posts/" element={<CreateBlog/>} />
@@ -27,7 +28,7 @@ function App() {
       <Route path="/admin/blogposts/:postId" element={<Blogpost />} />
     </Routes>
     </BrowserRouter>
-    </div>
+    </>
   )
 }
 

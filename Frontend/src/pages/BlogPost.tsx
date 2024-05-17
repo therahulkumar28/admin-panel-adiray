@@ -9,9 +9,17 @@ export default function Blogpost() {
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
-    axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`)
+    const token = localStorage.getItem('adminToken');
+  
+    // If token exists, make the API call with the token included in the headers
+    if (token) {
+      axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then(response => {
         setPost(response.data);
         setLoading(false);
@@ -21,6 +29,11 @@ export default function Blogpost() {
         setLoading(false);
         setError("Failed to fetch the blog post. Please try again later.");
       });
+    } else {
+      // Handle the case where the token doesn't exist (user is not authenticated)
+      setLoading(false); // Set loading to false since there's no token to make the request
+      // You might want to redirect the user to the login page or show a message indicating they need to log in
+    }
   }, [postId]);
 
   if (loading) {

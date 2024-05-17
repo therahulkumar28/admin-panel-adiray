@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import CustomButton from "./CustomButton/CustomButton";
 
 interface CustomButtonProps {
@@ -7,12 +7,34 @@ interface CustomButtonProps {
     refresh: () => void;
 }
 
+interface MyFile extends File {
+    // Add any additional properties or methods you may need
+}
+
 export default function CreateCategory({ visible, setVisible, refresh }: CustomButtonProps) {
     const [name, setName] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
+    const [file, setFile] = useState<MyFile | null>(null);
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const droppedFile = e.dataTransfer.files[0];
+        setFile(droppedFile);
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+    };
+
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files && e.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile as MyFile);
+        }
+    };
     const token = localStorage.getItem('adminToken');
     if (!token) {
         window.location.href = '/admin/login';
@@ -28,7 +50,8 @@ export default function CreateCategory({ visible, setVisible, refresh }: CustomB
             },
             body: JSON.stringify({
                 name: name,
-                imageUrl: imageUrl
+                imageUrl: [file?.name],
+                picture: file
             })
         });
         const data = await response.json();
@@ -40,7 +63,7 @@ export default function CreateCategory({ visible, setVisible, refresh }: CustomB
             console.log(data);
         }
         else {
-            setErrorMessage(data.message);
+            setErrorMessage(data.error);
             setError(true);
         }
     }
@@ -55,6 +78,7 @@ export default function CreateCategory({ visible, setVisible, refresh }: CustomB
                             <form onSubmit={handleSubmit}>
                                 <input className="focus:bg-white my-2 w-full px-6 py-5 rounded-full mb-4 bg-gray-100" type="text" placeholder="Category Name" value={name} onChange={(e) => setName(e.target.value)} />
                                 <input className="focus:bg-white my-2 w-full px-6 py-5 rounded-full mb-4 bg-gray-100" type="text" placeholder="Image Url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+
                                 <div className={` ${error ? '' : 'hidden'} mb-4 ml-1 mt-1 text-red-600`}>
                                     <span className="text-white bg-red-600 rounded-full px-2">!</span> {errorMessage}
                                 </div>

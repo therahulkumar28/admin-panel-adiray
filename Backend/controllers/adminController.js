@@ -37,6 +37,7 @@ const adminLogin = async (req, res) => {
         if (!isMatch) return res.status(401).json({ message: "Wrong Password. ", success: false });
         const token = jwt.sign({ id: user._id, username, password }, process.env.SECRET_KEY);
         delete user.password;
+      
         res.status(200).json({ token, user, success: true });
     }
     catch (err) {

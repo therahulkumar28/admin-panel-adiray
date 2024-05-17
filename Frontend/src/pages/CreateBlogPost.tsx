@@ -15,7 +15,7 @@ const CreateBlog = () => {
   });
   const token = localStorage.getItem('adminToken');
     if (!token) {
-        window.location.href = '/';
+        navigate('/');
     }
 
   const handleChange = (e:any, index:any) => {
@@ -41,15 +41,31 @@ const CreateBlog = () => {
     setFormData(prevData => ({ ...prevData, details: updatedDetails }));
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+   
+  
     try {
-      // Send formData to the API
-      await axios.post('https://node-js-jwt-auth.onrender.com/api/posts/', formData);
-      // Optionally, you can handle success, reset the form, or redirect the user
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        // Handle the case where the user is not authenticated (token not found)
+        console.error('User not authenticated');
+        navigate('/')
+        // Optionally, you can redirect the user to the login page or display an error message
+        return;
+      }
+  
+      // Send formData to the API with the token included in the headers
+      await axios.post('http://localhost:8080/api/posts/', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      // Handle success, reset the form, and redirect the user
       console.log('Blog post created successfully!');
       alert('Post Created Successfully');
-
+  
       // Reset the form after successful submission
       setFormData({
         author: '',
@@ -60,7 +76,8 @@ const CreateBlog = () => {
         details: [{ point: '', description: '' }],
         imageUrl: ''
       });
-      navigate('/admin/blog')
+  
+      navigate('/admin/blog');
     } catch (error) {
       // Handle errors, such as displaying an error message to the user
       console.error('Error creating blog post:', error);

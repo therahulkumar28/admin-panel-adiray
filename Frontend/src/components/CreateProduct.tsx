@@ -29,7 +29,6 @@ export default function CreateProduct({ visible, setVisible, refresh, categoryId
             },
             body: JSON.stringify({
                 name: name,
-                url: url,
                 categoryId: categoryId,
             })
         });
@@ -54,27 +53,15 @@ export default function CreateProduct({ visible, setVisible, refresh, categoryId
                     <div className="bg-white rounded-lg p-8 shadow-lg max-w-md w-full">
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <h2 className="text-xl font-semibold text-center mb-4">Create New Product</h2>
-                            <div>
-                                <label htmlFor="productName" className="block text-sm font-medium text-gray-700">Product Name</label>
+                            <div className="w-full">
+                                <label htmlFor="productName" className="   w-full block text-sm font-medium text-gray-700">Product Name</label>
                                 <input
                                     id="productName"
-                                    className="input-field"
+                                    className="input-field w-full my-2 px-2 py-2 rounded-lg  "
                                     type="text"
                                     placeholder="Enter product name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="productUrl" className="block text-sm font-medium text-gray-700">Image URL</label>
-                                <input
-                                    id="productUrl"
-                                    className="input-field"
-                                    type="text"
-                                    placeholder="Enter image URL"
-                                    value={url}
-                                    onChange={(e) => setUrl(e.target.value)}
                                     required
                                 />
                             </div>
