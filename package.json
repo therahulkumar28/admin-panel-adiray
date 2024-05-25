@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "react-i18next": "^14.1.2"
+  },
+  "devDependencies": {
+    "@types/aos": "^3.0.7"
+  }
+}
