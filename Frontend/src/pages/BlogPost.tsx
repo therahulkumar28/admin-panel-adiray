@@ -10,11 +10,9 @@ export default function Blogpost() {
   const [loading, setLoading] = useState(true);
   const fetchBlogPost = async () => {
     try {
-      const token = localStorage.getItem('adminToken'); // Check if 'adminToken' is the correct key
+      const token = localStorage.getItem('adminToken');
       if (!token) {
-        console.error("No token found");
-        setLoading(false);
-        return;
+          window.location.href = '/';
       }
 
       const response = await axios.get(`https://node-js-jwt-auth.onrender.com/api/admin/posts/${postId}`, {

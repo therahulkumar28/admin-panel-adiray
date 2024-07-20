@@ -15,7 +15,7 @@ const CreateBlog = () => {
   });
   const token = localStorage.getItem('adminToken');
     if (!token) {
-        navigate('/');
+        window.location.href = '/';
     }
 
   const handleChange = (e:any, index:any) => {

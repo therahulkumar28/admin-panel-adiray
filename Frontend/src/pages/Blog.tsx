@@ -36,6 +36,10 @@ const Blog: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 5;
 
+  const token = localStorage.getItem('adminToken');
+  if (!token) {
+      window.location.href = '/';
+  }
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {

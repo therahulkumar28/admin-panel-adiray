@@ -36,9 +36,9 @@ const UpdateBlog = () => {
     
   
     // If token doesn't exist, redirect the user to the login page
+  
     if (!token) {
-      navigate('/');
-      return;
+        window.location.href = '/';
     }
   
     // Fetch post details with the token included in the headers
@@ -82,6 +82,7 @@ const UpdateBlog = () => {
         // Handle the case where the user is not authenticated (token not found)
         console.error('User not authenticated');
         // Optionally, you can redirect the user to the login page or display an error message
+        
         return;
       }
   
