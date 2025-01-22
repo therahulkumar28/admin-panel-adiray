@@ -42,7 +42,7 @@ const UpdateBlog = () => {
     }
   
     // Fetch post details with the token included in the headers
-    axios.get(`http://localhost:8080/api/posts/${postId}`, {
+    axios.get(`https://node-js-jwt-auth.onrender.com/api/posts/${postId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
